@@ -1,0 +1,48 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - kekaClientId
+      - kekaClientSecret
+      - kekaApiKey
+      - kekaScope
+    properties:
+      kekaClientId:
+        type: string
+        description: Client ID for your Keka application
+      kekaClientSecret:
+        type: string
+        description: Client Secret for your Keka application
+      kekaApiKey:
+        type: string
+        description: API Key for accessing the Keka API
+      kekaScope:
+        type: string
+        description: Scope for the Keka API access token
+      kekaApiBaseUrl:
+        type: string
+        description: Base URL for the Keka API (optional, defaults to https://master.kekademo.com/api/v1)
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['build/index.js'],
+      env: {
+        KEKA_CLIENT_ID: config.kekaClientId,
+        KEKA_CLIENT_SECRET: config.kekaClientSecret,
+        KEKA_API_KEY: config.kekaApiKey,
+        KEKA_SCOPE: config.kekaScope,
+        KEKA_API_BASE_URL: config.kekaApiBaseUrl
+      }
+    })
+  exampleConfig:
+    kekaClientId: your_keka_client_id
+    kekaClientSecret: your_keka_client_secret
+    kekaApiKey: your_keka_api_key_here
+    kekaScope: "employees:read leaves:write" # Example scope
+    kekaApiBaseUrl: https://your_custom_keka_url.com/api/v1 # Optional
