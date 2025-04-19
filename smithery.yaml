@@ -19,9 +19,6 @@ startCommand:
       kekaRefreshToken:
         type: string
         description: Refresh Token for your Keka application
-      kekaApiBaseUrl:
-        type: string
-        description: Base URL for the Keka API (optional, defaults to https://master.kekademo.com/api/v1)
   commandFunction:
     # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
@@ -32,11 +29,11 @@ startCommand:
         KEKA_CLIENT_ID: config.kekaClientId,
         KEKA_CLIENT_SECRET: config.kekaClientSecret,
         KEKA_REFRESH_TOKEN: config.kekaRefreshToken,
-        KEKA_API_BASE_URL: config.kekaApiBaseUrl
+        
       }
     })
   exampleConfig:
     kekaClientId: your_keka_client_id
     kekaClientSecret: your_keka_client_secret
     kekaRefreshToken: your_keka_refresh_token
-    kekaApiBaseUrl: https://your_custom_keka_url.com/api/v1 # Optional
+    
