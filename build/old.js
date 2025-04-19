@@ -9,7 +9,16 @@
 // //   ListToolsRequestSchema,
 // //   Tool,
 // // } from "@modelcontextprotocol/sdk/types.js";
+Object.defineProperty(exports, "__esModule", { value: true });
 // // dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
+// // Now you can access the environment variables using process.env
+// const kekaClientId = process.env.KEKA_CLIENT_ID;
+// const kekaClientSecret = process.env.KEKA_CLIENT_SECRET;
+// const kekaApiKey = process.env.KEKA_API_KEY;
+// const kekaScope = process.env.KEKA_SCOPE;
+// const kekaApiBaseUrl = process.env.KEKA_API_BASE_URL;
 // // // Type definitions for tool arguments
 // // interface GetEmployeeProfileArgs {
 // //   employee_id: string;

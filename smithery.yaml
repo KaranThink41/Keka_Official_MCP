@@ -8,8 +8,7 @@ startCommand:
     required:
       - kekaClientId
       - kekaClientSecret
-      - kekaApiKey
-      - kekaScope
+      - kekaRefreshToken
     properties:
       kekaClientId:
         type: string
@@ -17,12 +16,9 @@ startCommand:
       kekaClientSecret:
         type: string
         description: Client Secret for your Keka application
-      kekaApiKey:
+      kekaRefreshToken:
         type: string
-        description: API Key for accessing the Keka API
-      kekaScope:
-        type: string
-        description: Scope for the Keka API access token
+        description: Refresh Token for your Keka application
       kekaApiBaseUrl:
         type: string
         description: Base URL for the Keka API (optional, defaults to https://master.kekademo.com/api/v1)
@@ -35,14 +31,12 @@ startCommand:
       env: {
         KEKA_CLIENT_ID: config.kekaClientId,
         KEKA_CLIENT_SECRET: config.kekaClientSecret,
-        KEKA_API_KEY: config.kekaApiKey,
-        KEKA_SCOPE: config.kekaScope,
+        KEKA_REFRESH_TOKEN: config.kekaRefreshToken,
         KEKA_API_BASE_URL: config.kekaApiBaseUrl
       }
     })
   exampleConfig:
     kekaClientId: your_keka_client_id
     kekaClientSecret: your_keka_client_secret
-    kekaApiKey: your_keka_api_key_here
-    kekaScope: "employees:read leaves:write" # Example scope
+    kekaRefreshToken: your_keka_refresh_token
     kekaApiBaseUrl: https://your_custom_keka_url.com/api/v1 # Optional

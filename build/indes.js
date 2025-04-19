@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -184,6 +175,8 @@ const getUpcomingHolidaysTool = {
 };
 // KekaClient class (as you provided)
 class KekaClient {
+    apiHeaders;
+    baseUrl;
     constructor(apiKey, baseUrl = "https://master.kekademo.com/api/v1") {
         this.apiHeaders = {
             Authorization: `Bearer ${apiKey}`,
@@ -191,265 +184,245 @@ class KekaClient {
         };
         this.baseUrl = baseUrl;
     }
-    getEmployeeProfile(employee_id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/employees/</span>{employee_id}`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getEmployeeProfile(employee_id) {
+        const response = await fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/employees/</span>{employee_id}`, {
+            method: "GET",
+            headers: this.apiHeaders
         });
+        return this.handleResponse(response);
     }
-    getAttendance(employee_id_1, start_date_1, end_date_1) {
-        return __awaiter(this, arguments, void 0, function* (employee_id, start_date, end_date, page = 1, page_size = 100) {
-            const params = new URLSearchParams({
-                startDate: start_date,
-                endDate: end_date,
-                page: page.toString(),
-                pageSize: Math.min(page_size, 100).toString(),
-            });
-            const response = yield fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/employees/</span>{employee_id}/attendance?${params}`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getAttendance(employee_id, start_date, end_date, page = 1, page_size = 100) {
+        const params = new URLSearchParams({
+            startDate: start_date,
+            endDate: end_date,
+            page: page.toString(),
+            pageSize: Math.min(page_size, 100).toString(),
         });
+        const response = await fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/employees/</span>{employee_id}/attendance?${params}`, {
+            method: "GET",
+            headers: this.apiHeaders
+        });
+        return this.handleResponse(response);
     }
-    getLeaveTypes() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/v1/leaves/types`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getLeaveTypes() {
+        const response = await fetch(`${this.baseUrl}/v1/leaves/types`, {
+            method: "GET",
+            headers: this.apiHeaders
         });
+        return this.handleResponse(response);
     }
-    applyLeave(employee_id, start_date, end_date, leave_type, reason) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/v1/leaves/requests`, {
-                method: "POST",
-                headers: this.apiHeaders,
-                body: JSON.stringify({
-                    employeeId: employee_id, // Ensure correct parameter name
-                    fromDate: start_date,
-                    toDate: end_date,
-                    leaveTypeId: leave_type, // Ensure correct parameter name
-                    reason: reason,
-                }),
-            });
-            return this.handleResponse(response);
+    async applyLeave(employee_id, start_date, end_date, leave_type, reason) {
+        const response = await fetch(`${this.baseUrl}/v1/leaves/requests`, {
+            method: "POST",
+            headers: this.apiHeaders,
+            body: JSON.stringify({
+                employeeId: employee_id, // Ensure correct parameter name
+                fromDate: start_date,
+                toDate: end_date,
+                leaveTypeId: leave_type, // Ensure correct parameter name
+                reason: reason,
+            }),
         });
+        return this.handleResponse(response);
     }
-    getLeaveBalances(employee_id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const params = new URLSearchParams({
-                employeeId: employee_id,
-            });
-            const response = yield fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/leaves/balances?</span>{params}`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getLeaveBalances(employee_id) {
+        const params = new URLSearchParams({
+            employeeId: employee_id,
         });
+        const response = await fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/leaves/balances?</span>{params}`, {
+            method: "GET",
+            headers: this.apiHeaders
+        });
+        return this.handleResponse(response);
     }
-    viewLeaveHistory(employee_id_1, startDate_1, endDate_1, status_1) {
-        return __awaiter(this, arguments, void 0, function* (employee_id, startDate, endDate, status, page = 1, pageSize = 100) {
-            const params = new URLSearchParams({
-                employeeId: employee_id,
-                startDate: startDate || "",
-                endDate: endDate || "",
-                status: status || "",
-                page: page.toString(),
-                pageSize: pageSize.toString(),
-            });
-            const response = yield fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/leaves/requests?</span>{params}`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async viewLeaveHistory(employee_id, startDate, endDate, status, page = 1, pageSize = 100) {
+        const params = new URLSearchParams({
+            employeeId: employee_id,
+            startDate: startDate || "",
+            endDate: endDate || "",
+            status: status || "",
+            page: page.toString(),
+            pageSize: pageSize.toString(),
         });
+        const response = await fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/leaves/requests?</span>{params}`, {
+            method: "GET",
+            headers: this.apiHeaders
+        });
+        return this.handleResponse(response);
     }
-    getPayslip(employee_id, month, year) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const params = new URLSearchParams({
-                employeeId: employee_id,
-                month: month,
-                year: year,
-            });
-            const response = yield fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/payroll/payslips?</span>{params}`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getPayslip(employee_id, month, year) {
+        const params = new URLSearchParams({
+            employeeId: employee_id,
+            month: month,
+            year: year,
         });
+        const response = await fetch(`<span class="math-inline">\{this\.baseUrl\}/v1/payroll/payslips?</span>{params}`, {
+            method: "GET",
+            headers: this.apiHeaders
+        });
+        return this.handleResponse(response);
     }
-    getUpcomingHolidays() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/v1/holidays`, {
-                method: "GET",
-                headers: this.apiHeaders
-            });
-            return this.handleResponse(response);
+    async getUpcomingHolidays() {
+        const response = await fetch(`${this.baseUrl}/v1/holidays`, {
+            method: "GET",
+            headers: this.apiHeaders
         });
+        return this.handleResponse(response);
     }
-    handleResponse(response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (response.status === 429) {
-                throw new Error("Rate limit exceeded. Please try again after 1 minute.");
-            }
-            const data = yield response.json();
-            if (!data.success) { // Adjust based on actual Keka API response structure
-                throw new Error(data.error || data.message || "API request failed"); // Adjust error handling
-            }
-            return data.data; // Assuming the actual data is under a 'data' key
-        });
+    async handleResponse(response) {
+        if (response.status === 429) {
+            throw new Error("Rate limit exceeded. Please try again after 1 minute.");
+        }
+        const data = await response.json();
+        if (!data.success) { // Adjust based on actual Keka API response structure
+            throw new Error(data.error || data.message || "API request failed"); // Adjust error handling
+        }
+        return data.data; // Assuming the actual data is under a 'data' key
     }
 }
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiKey = process.env.KEKA_API_KEY;
-        const baseUrl = process.env.KEKA_API_BASE_URL || "https://master.kekademo.com/api/v1";
-        if (!apiKey) {
-            console.error("Please set KEKA_API_KEY environment variable");
-            process.exit(1);
+async function main() {
+    const apiKey = process.env.KEKA_API_KEY;
+    const baseUrl = process.env.KEKA_API_BASE_URL || "https://master.kekademo.com/api/v1";
+    if (!apiKey) {
+        console.error("Please set KEKA_API_KEY environment variable");
+        process.exit(1);
+    }
+    console.error("Starting Keka MCP Server...");
+    const server = new index_js_1.Server({
+        name: "Keka MCP Server",
+        version: "1.0.0",
+    }, {
+        capabilities: {
+            tools: {},
+        },
+    });
+    const kekaClient = new KekaClient(apiKey, baseUrl);
+    server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
+        console.error("Received CallToolRequest:", request);
+        try {
+            if (!request.params.arguments) {
+                throw new Error("No arguments provided");
+            }
+            switch (request.params.name) {
+                case "keka_get_employee_profile": {
+                    const args = request.params
+                        .arguments;
+                    if (!args.employee_id) {
+                        throw new Error("Missing required argument: employee_id");
+                    }
+                    const response = await kekaClient.getEmployeeProfile(args.employee_id);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_get_attendance": {
+                    const args = request.params.arguments;
+                    if (!args.employee_id || !args.start_date || !args.end_date) {
+                        throw new Error("Missing required arguments: employee_id, start_date, and end_date");
+                    }
+                    const response = await kekaClient.getAttendance(args.employee_id, args.start_date, args.end_date, args.page, args.page_size);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_get_leave_types": {
+                    const args = request.params.arguments;
+                    const response = await kekaClient.getLeaveTypes();
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_apply_leave": {
+                    const args = request.params.arguments;
+                    if (!args.employee_id ||
+                        !args.start_date ||
+                        !args.end_date ||
+                        !args.leave_type ||
+                        !args.reason) {
+                        throw new Error("Missing required arguments: employee_id, start_date, end_date, leave_type, and reason");
+                    }
+                    const response = await kekaClient.applyLeave(args.employee_id, args.start_date, args.end_date, args.leave_type, args.reason);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_leave_balances": {
+                    const args = request.params
+                        .arguments;
+                    if (!args.employee_id) {
+                        throw new Error("Missing required argument: employee_id");
+                    }
+                    const response = await kekaClient.getLeaveBalances(args.employee_id);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_view_leave_history": {
+                    const args = request.params
+                        .arguments;
+                    if (!args.employee_id) {
+                        throw new Error("Missing required argument: employee_id");
+                    }
+                    const response = await kekaClient.viewLeaveHistory(args.employee_id, args.startDate, args.endDate, args.status, args.page, args.pageSize);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_get_payslip": {
+                    const args = request.params.arguments;
+                    if (!args.employee_id || !args.month || !args.year) {
+                        throw new Error("Missing required arguments: employee_id, month, and year");
+                    }
+                    const response = await kekaClient.getPayslip(args.employee_id, args.month, args.year);
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                case "keka_get_upcoming_holidays": {
+                    const args = request.params
+                        .arguments;
+                    const response = await kekaClient.getUpcomingHolidays();
+                    return {
+                        content: [{ type: "text", text: JSON.stringify(response) }],
+                    };
+                }
+                default:
+                    throw new Error(`Unknown tool: ${request.params.name}`);
+            }
         }
-        console.error("Starting Keka MCP Server...");
-        const server = new index_js_1.Server({
-            name: "Keka MCP Server",
-            version: "1.0.0",
-        }, {
-            capabilities: {
-                tools: {},
-            },
-        });
-        const kekaClient = new KekaClient(apiKey, baseUrl);
-        server.setRequestHandler(types_js_1.CallToolRequestSchema, (request) => __awaiter(this, void 0, void 0, function* () {
-            console.error("Received CallToolRequest:", request);
-            try {
-                if (!request.params.arguments) {
-                    throw new Error("No arguments provided");
-                }
-                switch (request.params.name) {
-                    case "keka_get_employee_profile": {
-                        const args = request.params
-                            .arguments;
-                        if (!args.employee_id) {
-                            throw new Error("Missing required argument: employee_id");
-                        }
-                        const response = yield kekaClient.getEmployeeProfile(args.employee_id);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_get_attendance": {
-                        const args = request.params.arguments;
-                        if (!args.employee_id || !args.start_date || !args.end_date) {
-                            throw new Error("Missing required arguments: employee_id, start_date, and end_date");
-                        }
-                        const response = yield kekaClient.getAttendance(args.employee_id, args.start_date, args.end_date, args.page, args.page_size);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_get_leave_types": {
-                        const args = request.params.arguments;
-                        const response = yield kekaClient.getLeaveTypes();
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_apply_leave": {
-                        const args = request.params.arguments;
-                        if (!args.employee_id ||
-                            !args.start_date ||
-                            !args.end_date ||
-                            !args.leave_type ||
-                            !args.reason) {
-                            throw new Error("Missing required arguments: employee_id, start_date, end_date, leave_type, and reason");
-                        }
-                        const response = yield kekaClient.applyLeave(args.employee_id, args.start_date, args.end_date, args.leave_type, args.reason);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_leave_balances": {
-                        const args = request.params
-                            .arguments;
-                        if (!args.employee_id) {
-                            throw new Error("Missing required argument: employee_id");
-                        }
-                        const response = yield kekaClient.getLeaveBalances(args.employee_id);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_view_leave_history": {
-                        const args = request.params
-                            .arguments;
-                        if (!args.employee_id) {
-                            throw new Error("Missing required argument: employee_id");
-                        }
-                        const response = yield kekaClient.viewLeaveHistory(args.employee_id, args.startDate, args.endDate, args.status, args.page, args.pageSize);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_get_payslip": {
-                        const args = request.params.arguments;
-                        if (!args.employee_id || !args.month || !args.year) {
-                            throw new Error("Missing required arguments: employee_id, month, and year");
-                        }
-                        const response = yield kekaClient.getPayslip(args.employee_id, args.month, args.year);
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    case "keka_get_upcoming_holidays": {
-                        const args = request.params
-                            .arguments;
-                        const response = yield kekaClient.getUpcomingHolidays();
-                        return {
-                            content: [{ type: "text", text: JSON.stringify(response) }],
-                        };
-                    }
-                    default:
-                        throw new Error(`Unknown tool: ${request.params.name}`);
-                }
-            }
-            catch (error) {
-                console.error("Error executing tool:", error);
-                return {
-                    content: [
-                        {
-                            type: "text",
-                            text: JSON.stringify({
-                                error: error instanceof Error ? error.message : String(error),
-                            }),
-                        },
-                    ],
-                };
-            }
-        }));
-        server.setRequestHandler(types_js_1.ListToolsRequestSchema, () => __awaiter(this, void 0, void 0, function* () {
-            console.error("Received ListToolsRequest");
+        catch (error) {
+            console.error("Error executing tool:", error);
             return {
-                tools: [
-                    getEmployeeProfileTool,
-                    getAttendanceTool,
-                    getLeaveTypesTool,
-                    applyLeaveTool,
-                    getLeaveBalancesTool,
-                    viewLeaveHistoryTool,
-                    getPayslipTool,
-                    getUpcomingHolidaysTool,
+                content: [
+                    {
+                        type: "text",
+                        text: JSON.stringify({
+                            error: error instanceof Error ? error.message : String(error),
+                        }),
+                    },
                 ],
             };
-        }));
-        const transport = new stdio_js_1.StdioServerTransport();
-        console.error("Connecting server to transport...");
-        yield server.connect(transport);
-        console.error("Keka MCP Server running on stdio");
+        }
     });
+    server.setRequestHandler(types_js_1.ListToolsRequestSchema, async () => {
+        console.error("Received ListToolsRequest");
+        return {
+            tools: [
+                getEmployeeProfileTool,
+                getAttendanceTool,
+                getLeaveTypesTool,
+                applyLeaveTool,
+                getLeaveBalancesTool,
+                viewLeaveHistoryTool,
+                getPayslipTool,
+                getUpcomingHolidaysTool,
+            ],
+        };
+    });
+    const transport = new stdio_js_1.StdioServerTransport();
+    console.error("Connecting server to transport...");
+    await server.connect(transport);
+    console.error("Keka MCP Server running on stdio");
 }
 main().catch((error) => {
     console.error("Fatal error in main():", error);
