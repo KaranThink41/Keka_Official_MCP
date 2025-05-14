@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/karanthink41-keka-official-mcp-badge.png)](https://mseep.ai/app/karanthink41-keka-official-mcp)
+
 # Keka MCP Server
 
 A Model Context Protocol (MCP) server for integrating with the Keka HR platform. This server exposes Keka employee management, attendance, leave, payslip, and holiday APIs as MCP tools, with robust OAuth2 authentication and modular code structure.
