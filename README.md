@@ -1,4 +1,5 @@
 [![MseeP.ai Security Assessment Badge](https://mseep.net/pr/karanthink41-keka-official-mcp-badge.png)](https://mseep.ai/app/karanthink41-keka-official-mcp)
+[![Verified on MseeP](https://mseep.ai/badge.svg)](https://mseep.ai/app/134c5f5d-052d-416f-a4ce-c9c9b432de2e)
 
 # Keka MCP Server
 
